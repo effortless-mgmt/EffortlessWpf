@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EffortlessWpf", "EffortlessWpf\EffortlessWpf.csproj", "{F529E86E-CD68-40A0-A6FA-36D361E6E881}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EffortlessStdLibrary", "EffortlessStdLibrary\EffortlessStdLibrary.csproj", "{A12B2115-E213-40B6-96EE-EF1A8402BED1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F529E86E-CD68-40A0-A6FA-36D361E6E881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F529E86E-CD68-40A0-A6FA-36D361E6E881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F529E86E-CD68-40A0-A6FA-36D361E6E881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12B2115-E213-40B6-96EE-EF1A8402BED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12B2115-E213-40B6-96EE-EF1A8402BED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12B2115-E213-40B6-96EE-EF1A8402BED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12B2115-E213-40B6-96EE-EF1A8402BED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

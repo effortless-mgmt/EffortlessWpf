@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EffortlessWpf.Models
 {
-    class TokenModel
+    public class TokenModel
     {
         public UserModel User { get; set; }
         public string Token { get; set; }

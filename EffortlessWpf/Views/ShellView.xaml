@@ -46,9 +46,6 @@
                 <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LastName}" />
                 <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" />
                 <DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" />
-                <DataGridTemplateColumn>
-                    <ToggleButton.Checked>hej</ToggleButton.Checked>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <StatusBar Grid.Row="5" Grid.ColumnSpan="5">

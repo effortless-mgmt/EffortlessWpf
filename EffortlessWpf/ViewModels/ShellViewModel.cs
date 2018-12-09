@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
 using EffortlessStdLibrary.DataAccess;
+using EffortlessStdLibrary.Models;
 using EffortlessWpf.Models;
 using Flurl.Http;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,13 +14,13 @@ using System.Windows;
 
 namespace EffortlessWpf.ViewModels
 {
-    class ShellViewModel : Screen
+    class ShellViewModel : Conductor<object>
     {
-        public BindableCollection<UserModel> Users { get; set; }
         public BindableCollection<string> ServerSettings { get; set; }
-        //public BindableCollection<string> ServerSettings { get; set; } = new BindableCollection<string>(new List<string> { "Production", "Staging" , "Local" });
         private string _selectedServerSetting = "No environment selected";
         private UserAccess _userAccess;
+
+        private GenericDataViewModel<IEffortlessModel> CurrentViewModel { get; set; }
 
         public string SelectedServerSetting
         {
@@ -48,7 +50,7 @@ namespace EffortlessWpf.ViewModels
                 if (serverUrl != null)
                 {
                     _userAccess = new UserAccess(serverUrl);
-                   Task.Run(async () => await LoadUsers());
+                    // load users
                 }
                 else
                 {
@@ -59,12 +61,9 @@ namespace EffortlessWpf.ViewModels
             }
         }
 
-
-        protected override async void OnInitialize()
+        protected override void OnInitialize()
         {
-            SetServerSettings();
-            //await LoadUsers();
-
+            LoadUsersPage();
         }
 
         private void SetServerSettings()
@@ -84,30 +83,37 @@ namespace EffortlessWpf.ViewModels
             NotifyOfPropertyChange(() => ServerSettings);
         }
 
-        public async Task LoadUsers()
-        {
-            Users = new BindableCollection<UserModel>(await _userAccess.GetUsersAsync());
-            NotifyOfPropertyChange(() => Users);
-
-            Debug.WriteLine($"There are {Users.Count} users in total.");
-
-            foreach (var user in Users)
-            {
-                Debug.WriteLine($"Loaded user: {user.UserName} : {user.FirstName} {user.LastName}");
-            }
-        }
-
         public void SelectProduction()
         {
             SelectedServerSetting = "Production";
         }
+
         public void SelectStaging()
         {
             SelectedServerSetting = "Staging";
         }
+
         public void SelectLocal()
         {
             SelectedServerSetting = "Local";
+        }
+
+        public void LoadUsersPage()
+        {
+            //ActivateItem(new UsersViewModel());
+            ActivateItem(new GenericDataViewModel<UserModel>("https://staging.effortless.dk/api"));
+        }
+
+        public void LoadCompaniesPage()
+        {
+            //ActivateItem(new CompaniesViewModel());
+            //CurrentViewModel = new GenericDataViewModel<CompanyModel>("https://staging.effortless.dk/api");
+            ActivateItem(new GenericDataViewModel<CompanyModel>("https://staging.effortless.dk/api"));
+        }
+
+        public void ActivateDataWindow()
+        {
+            ActivateItem(CurrentViewModel);
         }
     }
 }

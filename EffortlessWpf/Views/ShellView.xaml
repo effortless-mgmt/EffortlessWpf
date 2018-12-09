@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EffortlessWpf.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800" Background="Black">
+        Title="Effortless WPF" Height="450" Width="800" Background="Black" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--<ColumnDefinition Width="20" />-->
@@ -35,19 +35,17 @@
                 <MenuItem Header="_Staging" x:Name="SelectStaging" />
                 <MenuItem Header="_Localhost" x:Name="SelectLocal" />
             </MenuItem>
+            <MenuItem Header="Data _Source">
+                <MenuItem Header="_Users" x:Name="LoadUsersPage" />
+                <MenuItem Header="C_ompanies" x:Name="LoadCompaniesPage" />
+            </MenuItem>
         </Menu>
 
-        <DataGrid x:Name="Users" Grid.Row="1" Grid.Column="1" 
-                  AutoGenerateColumns="False" CanUserDeleteRows="True"
-                  Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Username" Binding="{Binding Path=UserName}" />
-                <DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}" />
-                <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LastName}" />
-                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" />
-                <DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <ContentControl x:Name="ActiveItem" Background="Salmon"
+                        Grid.Row="1" Grid.RowSpan="3" 
+                        Grid.Column="1" Grid.ColumnSpan="5">
+        </ContentControl>
+
         <StatusBar Grid.Row="5" Grid.ColumnSpan="5">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -62,13 +60,7 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <!--<StatusBarItem Grid.Column="1">
-                <TextBlock Text="Production" />
-            </StatusBarItem>-->
             <StatusBarItem Grid.Column="1" Content="{Binding Path=SelectedServerSetting}" />
-            <!--<ComboBox x:Name="ServerSettings" SelectedItem="{Binding SelectedServerSetting}">
-                </ComboBox>-->
-            <!--</StatusBarItem>-->
         </StatusBar>
     </Grid>
 </Window>

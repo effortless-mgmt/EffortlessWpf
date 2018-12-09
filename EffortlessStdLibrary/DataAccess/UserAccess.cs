@@ -1,4 +1,4 @@
-﻿using EffortlessWpf.Models;
+﻿using EffortlessStdLibrary.Models;
 using Flurl;
 using Flurl.Http;
 using System;
@@ -24,6 +24,22 @@ namespace EffortlessStdLibrary.DataAccess
             return await _apiUrl
                 .AppendPathSegment("User")
                 .GetJsonAsync<ICollection<UserModel>>();
+        }
+
+        public async Task DeleteUser(UserModel user)
+        {
+            await _apiUrl
+                .AppendPathSegment("User")
+                .AppendPathSegment(user.UserName)
+                .DeleteAsync();
+        }
+
+        public async Task<UserModel> CreateUser(UserModel user)
+        {
+            return await _apiUrl
+                .AppendPathSegment("User")
+                .PostJsonAsync(user)
+                .ReceiveJson<UserModel>();
         }
     }
 }

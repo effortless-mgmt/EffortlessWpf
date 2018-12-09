@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EffortlessWpf.Models
+namespace EffortlessStdLibrary.Models
 {
-    public class UserModel
+    public class UserModel : IEffortlessModel
     {
         public long Id { get; set; }
         public string UserName { get; set; }

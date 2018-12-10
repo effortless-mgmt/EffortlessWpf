@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:EffortlessWpf.Views"
         mc:Ignorable="d"
         Title="Effortless WPF" Height="450" Width="800" Background="Black" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner">
@@ -38,6 +39,7 @@
             <MenuItem Header="Data _Source">
                 <MenuItem Header="_Users" x:Name="LoadUsersPage" />
                 <MenuItem Header="C_ompanies" x:Name="LoadCompaniesPage" />
+                <MenuItem Header="De_partments" x:Name="LoadDepartmentsPage" />
             </MenuItem>
         </Menu>
 

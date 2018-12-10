@@ -11,7 +11,14 @@ namespace EffortlessStdLibrary.DataAccess
 {
     public class GenericDataAccess<T> where T : IEffortlessModel
     {
-        private readonly string _apiUrl;
+        private string _apiUrl;
+
+        public string ApiUrl
+        {
+            get { return _apiUrl; }
+            set { _apiUrl = value; }
+        }
+
         // 5 corresponds to the length of "Model", so UserModel outputs "User" and "CompanyModel" outputs "Company"
         private string _modelName => typeof(T).Name.Remove(typeof(T).Name.Length - 5, 5);
         

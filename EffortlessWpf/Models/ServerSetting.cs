@@ -8,6 +8,6 @@ namespace EffortlessWpf.Models
 {
     public enum ServerSetting
     {
-        Production, Staging, Local
+        Production, Staging, Local, None
     }
 }

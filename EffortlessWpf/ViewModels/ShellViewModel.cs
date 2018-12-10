@@ -1,8 +1,6 @@
 ﻿using Caliburn.Micro;
-using EffortlessStdLibrary.DataAccess;
 using EffortlessStdLibrary.Models;
 using EffortlessWpf.Models;
-using Flurl.Http;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -17,12 +15,12 @@ namespace EffortlessWpf.ViewModels
     class ShellViewModel : Conductor<object>
     {
         public BindableCollection<string> ServerSettings { get; set; }
-        private string _selectedServerSetting = "No environment selected";
-        private UserAccess _userAccess;
+        public string ServerUrl { get; private set; }
+        
+        private dynamic _currentDataView;
 
-        private GenericDataViewModel<IEffortlessModel> CurrentViewModel { get; set; }
-
-        public string SelectedServerSetting
+        private ServerSetting _selectedServerSetting = ServerSetting.None;
+        public ServerSetting SelectedServerSetting
         {
             get
             {
@@ -31,89 +29,60 @@ namespace EffortlessWpf.ViewModels
             set
             { 
                 _selectedServerSetting = value;
-                string serverUrl = null;
                 Debug.WriteLine($"Selected {value} {_selectedServerSetting} {SelectedServerSetting}");
                 
-                if (SelectedServerSetting == "Production")
+                switch(value)
                 {
-                    serverUrl = "https://api.effortless.dk/api/";
-                } 
-                else if (SelectedServerSetting == "Staging")
-                {
-                    serverUrl = "https://staging.effortless.dk/api/";
-                }
-                else if (SelectedServerSetting == "Local")
-                {
-                    serverUrl = "http://10.20.0.98:5000/api/";
+                    case ServerSetting.Production:
+                        ServerUrl = "https://api.effortless.dk/api/";
+                        break;
+                    case ServerSetting.Staging:
+                        ServerUrl = "https://staging.effortless.dk/api/";
+                        break;
+                    case ServerSetting.Local:
+                        ServerUrl = "http://10.20.0.98:5000/api/";
+                        break;
                 }
 
-                if (serverUrl != null)
+                if (_currentDataView != null)
                 {
-                    _userAccess = new UserAccess(serverUrl);
-                    // load users
-                }
-                else
-                {
-                    Debug.WriteLine("WTTF");
+                    UpdateCurrentViewData();
                 }
 
                 NotifyOfPropertyChange(() => SelectedServerSetting);
             }
         }
 
-        protected override void OnInitialize()
+        /// <summary>
+        /// Fire and forget method to update the data in the current data view
+        /// </summary>
+        private void UpdateCurrentViewData()
         {
-            LoadUsersPage();
+            List<UserModel> users = new List<UserModel>();
+            users.Select(user => user.Email == "some@email.com").FirstOrDefault();
+            _currentDataView.DataAccess.ApiUrl = ServerUrl;
+            Task.Run(async () => await _currentDataView.LoadItemsAsync());
         }
 
-        private void SetServerSettings()
+        public void SelectProduction() => SelectedServerSetting = ServerSetting.Production;
+        public void SelectStaging() => SelectedServerSetting = ServerSetting.Staging;
+        public void SelectLocal() => SelectedServerSetting = ServerSetting.Local;
+
+        public void LoadUsersPage() => ActivateDataWindow<UserModel>();
+        public void LoadCompaniesPage() => ActivateDataWindow<CompanyModel>();
+        public void LoadDepartmentsPage() => ActivateDataWindow<DepartmentModel>();
+
+        public void ActivateDataWindow<T>() where T : IEffortlessModel
         {
-            var sServerSettings = typeof(ServerSetting).GetFields();
+            _currentDataView = new GenericDataViewModel<T>(ServerUrl);
 
-            var settings = new List<string>(sServerSettings.Length);
-
-            foreach (var s in sServerSettings)
+            // Set server setting to production if nothing has been selected
+            if (string.IsNullOrEmpty(ServerUrl))
             {
-                if (!s.IsStatic) continue;
-                settings.Add(s.Name);
+                SelectedServerSetting = ServerSetting.Production;
             }
 
-            ServerSettings = new BindableCollection<string>(settings);
-
-            NotifyOfPropertyChange(() => ServerSettings);
-        }
-
-        public void SelectProduction()
-        {
-            SelectedServerSetting = "Production";
-        }
-
-        public void SelectStaging()
-        {
-            SelectedServerSetting = "Staging";
-        }
-
-        public void SelectLocal()
-        {
-            SelectedServerSetting = "Local";
-        }
-
-        public void LoadUsersPage()
-        {
-            //ActivateItem(new UsersViewModel());
-            ActivateItem(new GenericDataViewModel<UserModel>("https://staging.effortless.dk/api"));
-        }
-
-        public void LoadCompaniesPage()
-        {
-            //ActivateItem(new CompaniesViewModel());
-            //CurrentViewModel = new GenericDataViewModel<CompanyModel>("https://staging.effortless.dk/api");
-            ActivateItem(new GenericDataViewModel<CompanyModel>("https://staging.effortless.dk/api"));
-        }
-
-        public void ActivateDataWindow()
-        {
-            ActivateItem(CurrentViewModel);
+            ActivateItem(_currentDataView);
         }
     }
 }

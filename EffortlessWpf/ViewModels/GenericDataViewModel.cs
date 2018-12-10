@@ -12,11 +12,20 @@ namespace EffortlessWpf.ViewModels
 {
     public class GenericDataViewModel<T> : Screen where T : IEffortlessModel
     {
-        private readonly GenericDataAccess<T> _dataAccess;
+        //private readonly GenericDataAccess<T> _dataAccess;
+        //public GenericDataAccess<T> DataAccess { get { return _dataAccess} }
+        private GenericDataAccess<T> _dataAccess;
+
+        public GenericDataAccess<T> DataAccess
+        {
+            get { return _dataAccess; }
+            private set { _dataAccess = value; }
+        }
+
         public BindableCollection<T> DataItems { get; set; }
         public T SelectedItem { get; set; }
 
-        public GenericDataViewModel(string apiUrl) => _dataAccess = new GenericDataAccess<T>(apiUrl);
+        public GenericDataViewModel(string apiUrl) => DataAccess = new GenericDataAccess<T>(apiUrl);
 
         protected override async void OnInitialize()
         {

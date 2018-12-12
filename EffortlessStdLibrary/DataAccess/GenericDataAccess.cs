@@ -45,7 +45,6 @@ namespace EffortlessStdLibrary.DataAccess
                     .AppendPathSegments(_modelName, model.Id)
                     .GetJsonAsync<T>();
             }
-
         }
 
         public async Task<T> CreateAsync(T model)

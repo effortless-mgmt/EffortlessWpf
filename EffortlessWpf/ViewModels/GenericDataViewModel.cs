@@ -12,15 +12,7 @@ namespace EffortlessWpf.ViewModels
 {
     public class GenericDataViewModel<T> : Screen where T : IEffortlessModel
     {
-        //private readonly GenericDataAccess<T> _dataAccess;
-        //public GenericDataAccess<T> DataAccess { get { return _dataAccess} }
-        private GenericDataAccess<T> _dataAccess;
-
-        public GenericDataAccess<T> DataAccess
-        {
-            get { return _dataAccess; }
-            private set { _dataAccess = value; }
-        }
+        public GenericDataAccess<T> DataAccess { get; private set; }
 
         public BindableCollection<T> DataItems { get; set; }
         public T SelectedItem { get; set; }
@@ -34,7 +26,7 @@ namespace EffortlessWpf.ViewModels
 
         public async Task LoadItemsAsync()
         {
-            DataItems = new BindableCollection<T>(await _dataAccess.GetAllAsync());
+            DataItems = new BindableCollection<T>(await DataAccess.GetAllAsync());
             DataItems.CollectionChanged += HandleItemChange;
 
             NotifyOfPropertyChange(() => DataItems);
@@ -46,7 +38,7 @@ namespace EffortlessWpf.ViewModels
             {
                 foreach (var item in e.OldItems)
                 {
-                    await _dataAccess.DeleteAsync((T)item);
+                    await DataAccess.DeleteAsync((T)item);
 
                     await LoadItemsAsync();
                 }

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using EffortlessStdLibrary.DataAccess;
 using EffortlessStdLibrary.Models;
 using EffortlessWpf.Models;
 using System;
@@ -58,8 +59,6 @@ namespace EffortlessWpf.ViewModels
         /// </summary>
         private void UpdateCurrentViewData()
         {
-            List<UserModel> users = new List<UserModel>();
-            users.Select(user => user.Email == "some@email.com").FirstOrDefault();
             _currentDataView.DataAccess.ApiUrl = ServerUrl;
             Task.Run(async () => await _currentDataView.LoadItemsAsync());
         }
@@ -74,7 +73,8 @@ namespace EffortlessWpf.ViewModels
 
         public void ActivateDataWindow<T>() where T : IEffortlessModel
         {
-            _currentDataView = new GenericDataViewModel<T>(ServerUrl);
+            var dataView = new GenericDataViewModel<T>(ServerUrl);
+            _currentDataView = dataView;
 
             // Set server setting to production if nothing has been selected
             if (string.IsNullOrEmpty(ServerUrl))
@@ -82,7 +82,26 @@ namespace EffortlessWpf.ViewModels
                 SelectedServerSetting = ServerSetting.Production;
             }
 
+            dataView.DoubleClickedEventHandler += Test;
             ActivateItem(_currentDataView);
+        }
+
+        public async void Test(object o, EffortlessModelEventArgs args)
+        {
+            Debug.WriteLine($"I was double clicked. Id is {args.Model?.Id}");
+            if (args.Model is UserModel user)
+            {
+                Debug.WriteLine($"You clicked on {user.FirstName} {user.LastName}.");
+            }
+            else if (args.Model is CompanyModel company)
+            {
+                IWindowManager wm = new WindowManager();
+                //var companyAccess = new CompanyAccess(ServerUrl);
+                //var departments = await new CompanyAccess(ServerUrl).Departments(company);
+                //var departmentModel = new CompanyDepartmentsViewModel(ServerUrl);
+                wm.ShowWindow(new CompanyDepartmentsViewModel(ServerUrl, company));
+                //wm.ShowPopup(departmentModel);
+            }
         }
     }
 }

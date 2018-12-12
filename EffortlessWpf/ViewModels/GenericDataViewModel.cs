@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
 using EffortlessStdLibrary.DataAccess;
 using EffortlessStdLibrary.Models;
+using EffortlessWpf.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +19,12 @@ namespace EffortlessWpf.ViewModels
         public BindableCollection<T> DataItems { get; set; }
         public T SelectedItem { get; set; }
 
-        public GenericDataViewModel(string apiUrl) => DataAccess = new GenericDataAccess<T>(apiUrl);
+        public GenericDataViewModel(string apiUrl)
+        {
+            DataAccess = new GenericDataAccess<T>(apiUrl);
+        }
+
+        public event EventHandler<EffortlessModelEventArgs> DoubleClickedEventHandler;
 
         protected override async void OnInitialize()
         {
@@ -44,5 +51,12 @@ namespace EffortlessWpf.ViewModels
                 }
             }
         }
+
+        //private void Mouse_DoubleClick(T clickedItem) => DoubleClickedEventHandler?.Invoke(this, new EffortlessModelEventArgs(clickedItem));
+        public void DoubleClick() => DoubleClickedEventHandler?.Invoke(this, new EffortlessModelEventArgs(SelectedItem));
+        //private void DoubleClick()
+        //{
+        //    Debug.WriteLine("Stuff and things!");
+        //}
     }
 }

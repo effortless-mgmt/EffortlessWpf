@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="EffortlessWpf.Views.Departments.WorkPeriodControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EffortlessWpf.Views.Departments"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid x:Name="Appointments" AutoGenerateColumns="False"
+                      CanUserDeleteRows="False" AlternatingRowBackground="LightGray" Background="White"
+                        CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedAppointment}"
+                    IsReadOnly="True" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Owner.FullNameCapitalized}" />
+                <DataGridTextColumn Header="Start Time" Binding="{Binding Path=Start}" />
+                <DataGridTextColumn Header="Stop Time" Binding="{Binding Path=Stop}" />
+                <DataGridTextColumn Header="Break" Binding="{Binding Path=Break}" />
+            </DataGrid.Columns>
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Grid Background="Salmon">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="20" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 0 20 0">Username</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 0 20 0" Text="{Binding Path=Owner.UserName}"></TextBlock>
+
+                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="0 0 20 0">Full Name</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Margin="0 0 20 0" Text="{Binding Path=Owner.FullNameCapitalized}"></TextBlock>
+
+                        <TextBlock Grid.Row="1" Grid.Column="3" Margin="0 0 20 0">Email</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Margin="0 0 20 0" Text="{Binding Path=Owner.Email}"></TextBlock>
+
+                        <TextBlock Grid.Row="1" Grid.Column="4">Phone</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Path=Owner.Phone}"></TextBlock>
+
+                        <Button x:Name="MailSelectedUser" Grid.Row="1" Grid.RowSpan="2" Grid.Column="6" Content="Mail User" Padding="10" cal:Message.Attach="MailSelectedUser()" />
+
+                    </Grid>
+
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+    </Grid>
+</UserControl>

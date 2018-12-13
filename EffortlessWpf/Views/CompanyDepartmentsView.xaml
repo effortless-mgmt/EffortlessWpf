@@ -5,12 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EffortlessWpf.Views"
         mc:Ignorable="d"
-        Title="CompanyDepartmentsView" Height="450" Width="800">
+        Title="{Binding Path=WindowTitle}" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="Departments" AutoGenerateColumns="True"
                       CanUserDeleteRows="False" AlternatingRowBackground="LightGray" Background="White"
                         CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedDepartment}"
                     IsReadOnly="True" SelectionMode="Single">
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <DataGrid x:Name="WorkPeriodss" ItemsSource="{Binding WorkPeriods}" AutoGenerateColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" CanUserReorderColumns="False" SelectionMode="Single">
+                        
+                    </DataGrid>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
     </Grid>
 </Window>

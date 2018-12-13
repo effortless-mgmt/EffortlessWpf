@@ -10,24 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EffortlessWpf.Views
+namespace EffortlessWpf.Views.Departments
 {
     /// <summary>
-    /// Interaction logic for UsersView.xaml
+    /// Interaction logic for CompanySubView.xaml
     /// </summary>
-    public partial class UsersView : UserControl
+    public partial class CompanySubView : Window
     {
-        public UsersView()
+        public CompanySubView()
         {
             InitializeComponent();
-        }
-
-        private void Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

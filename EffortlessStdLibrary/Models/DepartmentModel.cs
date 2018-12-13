@@ -9,5 +9,6 @@ namespace EffortlessStdLibrary.Models
         public long Id { get; set; }
         public int Pno { get; set; }
         public string Name { get; set; }
+        public IList<WorkPeriodModel> WorkPeriods { get; set; }
     }
 }

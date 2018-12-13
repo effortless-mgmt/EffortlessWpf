@@ -17,11 +17,25 @@ namespace EffortlessStdLibrary.DataAccess
             _apiUrl = apiUrl;
         }
 
-        public async Task<IEnumerable<DepartmentModel>> Departments(CompanyModel company)
+        public async Task<IList<DepartmentModel>> Departments(CompanyModel company)
         {
             return await _apiUrl
                 .AppendPathSegments("Company", company.Id, "Departments")
-                .GetJsonAsync<IEnumerable<DepartmentModel>>();
+                .GetJsonAsync<IList<DepartmentModel>>();
         }
+
+        public async Task<IList<WorkPeriodModel>> FetchWorkPeriodsAsync(DepartmentModel department)
+        {
+            return await _apiUrl
+                .AppendPathSegments("Department", department.Id, "workperiod")
+                .GetJsonAsync<IList<WorkPeriodModel>>();
+        }
+
+        //public async Task<IList<AppointmentModel>> FetchAppointments(WorkPeriodModel currentWorkPeriod)
+        //{
+        //    return await _apiUrl
+        //        .AppendPathSegments()
+        //        .GetJsonAsync<IList<AppointmentModel>>();
+        //}
     }
 }

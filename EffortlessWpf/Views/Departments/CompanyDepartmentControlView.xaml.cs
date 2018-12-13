@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EffortlessWpf.Views
+namespace EffortlessWpf.Views.Departments
 {
     /// <summary>
-    /// Interaction logic for UsersView.xaml
+    /// Interaction logic for CompanyDepartmentControlView.xaml
     /// </summary>
-    public partial class UsersView : UserControl
+    public partial class CompanyDepartmentControlView : UserControl
     {
-        public UsersView()
+        public CompanyDepartmentControlView()
         {
             InitializeComponent();
-        }
-
-        private void Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

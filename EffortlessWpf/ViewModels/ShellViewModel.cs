@@ -96,11 +96,8 @@ namespace EffortlessWpf.ViewModels
             else if (args.Model is CompanyModel company)
             {
                 IWindowManager wm = new WindowManager();
-                //var companyAccess = new CompanyAccess(ServerUrl);
-                //var departments = await new CompanyAccess(ServerUrl).Departments(company);
-                //var departmentModel = new CompanyDepartmentsViewModel(ServerUrl);
-                wm.ShowWindow(new CompanyDepartmentsViewModel(ServerUrl, company));
-                //wm.ShowPopup(departmentModel);
+                //wm.ShowWindow(new CompanyDepartmentsViewModel(ServerUrl, company));
+                wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, company));
             }
         }
     }

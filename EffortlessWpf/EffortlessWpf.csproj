@@ -93,6 +93,7 @@
     <Compile Include="ViewModels\LoginControlViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
+    <Compile Include="ViewModels\Users\UserAppointmentViewModel.cs" />
     <Compile Include="Views\CompaniesView.xaml.cs">
       <DependentUpon>CompaniesView.xaml</DependentUpon>
     </Compile>
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="Views\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Users\UserAppointmentView.xaml.cs">
+      <DependentUpon>UserAppointmentView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +189,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Users\UserAppointmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Users\" />
-    <Folder Include="Views\Users\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\EffortlessStdLibrary\EffortlessStdLibrary.csproj">
       <Project>{a12b2115-e213-40b6-96ee-ef1a8402bed1}</Project>

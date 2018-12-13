@@ -17,6 +17,7 @@ namespace EffortlessWpf.ViewModels
         public GenericDataAccess<T> DataAccess { get; private set; }
 
         public BindableCollection<T> DataItems { get; set; }
+
         public T SelectedItem { get; set; }
 
         public GenericDataViewModel(string apiUrl)

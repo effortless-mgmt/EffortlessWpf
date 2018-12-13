@@ -10,7 +10,7 @@ namespace EffortlessStdLibrary.Models
         public DateTime Start { get; set; }
         public DateTime Stop { get; set; }
         public int Break { get; set; }
-        //public WorkPeriodModel WorkPeriod { get; set; }
+        public WorkPeriodModel WorkPeriod { get; set; }
         public UserModel Owner { get; set; }
     }
 }

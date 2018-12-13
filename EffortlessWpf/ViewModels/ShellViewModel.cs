@@ -102,14 +102,15 @@ namespace EffortlessWpf.ViewModels
 
         public async void Test(object o, EffortlessModelEventArgs args)
         {
+            IWindowManager wm = new WindowManager();
             Debug.WriteLine($"I was double clicked. Id is {args.Model?.Id}");
             if (args.Model is UserModel user)
             {
                 Debug.WriteLine($"You clicked on {user.FirstName} {user.LastName}.");
+                wm.ShowWindow(new Users.UserAppointmentViewModel(ServerUrl, user));
             }
             else if (args.Model is CompanyModel company)
             {
-                IWindowManager wm = new WindowManager();
                 //wm.ShowWindow(new CompanyDepartmentsViewModel(ServerUrl, company));
                 wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, company));
             }

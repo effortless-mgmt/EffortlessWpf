@@ -12,23 +12,23 @@ namespace EffortlessStdLibrary.DataAccess
 {
     public class UserAccess
     {
-        private readonly string _apiUrl;
+        public string ApiUrl { get; set; }
 
         public UserAccess(string apiUrl)
         {
-            _apiUrl = apiUrl;
+            ApiUrl = apiUrl;
         }
 
         public async Task<ICollection<UserModel>> GetUsersAsync()
         {
-            return await _apiUrl
+            return await ApiUrl
                 .AppendPathSegment("User")
                 .GetJsonAsync<ICollection<UserModel>>();
         }
 
         public async Task DeleteUser(UserModel user)
         {
-            await _apiUrl
+            await ApiUrl
                 .AppendPathSegment("User")
                 .AppendPathSegment(user.UserName)
                 .DeleteAsync();
@@ -36,10 +36,17 @@ namespace EffortlessStdLibrary.DataAccess
 
         public async Task<UserModel> CreateUser(UserModel user)
         {
-            return await _apiUrl
+            return await ApiUrl
                 .AppendPathSegment("User")
                 .PostJsonAsync(user)
                 .ReceiveJson<UserModel>();
+        }
+
+        public async Task<IList<WorkPeriodModel>> GetAppointmentsForUserAsync(UserModel user)
+        {
+            return await ApiUrl
+                .AppendPathSegments("User", user.UserName, "Appointment")
+                .GetJsonAsync<IList<WorkPeriodModel>>();
         }
     }
 }

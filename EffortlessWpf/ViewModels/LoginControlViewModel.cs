@@ -34,6 +34,8 @@ namespace EffortlessWpf.ViewModels
             {
                 _apiUrl = value;
                 _authAccess = new AuthAccess(ApiUrl);
+                UserName = "";
+                Password = "";
             }
         }
 
@@ -60,6 +62,7 @@ namespace EffortlessWpf.ViewModels
             {
                 var msg = ex.GetResponseJsonAsync().ToString();
                 Debug.WriteLine($"I just failed so much, you wouldn't believe it: {ex.Message}, {msg}");
+                MessageBox.Show($"Could not login. Either the server is down ({ApiUrl}) or the entered credentials were incorrect.\n\n{ex.Message}.", "Failed to login", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -77,7 +80,7 @@ namespace EffortlessWpf.ViewModels
             {
                 Debug.WriteLine($"Successfully signed in as {loginToken.User.FullNameCapitalized}.");
 
-                AuthSingleton.Instance.AuthToken = loginToken;
+                AuthSingleton.Instance.Login(loginToken);
 
                 OnSuccessfullLogin?.Invoke(this, loginToken);
             }

@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EffortlessWpf.Views.Users"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="{Binding Path=WindowTitle}" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="Appointments" AutoGenerateColumns="False"
                       CanUserDeleteRows="False" AlternatingRowBackground="LightGray" Background="White"
                         CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedAppointment}"
-                    IsReadOnly="True" SelectionMode="Single">
+                    IsReadOnly="True" SelectionMode="Single" cal:Message.Attach="[Event MouseDoubleClick] = [Action DoubleClick()]">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Department" Binding="{Binding Path=WorkPeriod.Department.Name}" />
                 <DataGridTextColumn Header="Address" Binding="{Binding Path=WorkPeriod.Department.Address.ReadableString}" />

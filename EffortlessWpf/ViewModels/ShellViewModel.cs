@@ -11,7 +11,7 @@ namespace EffortlessWpf.ViewModels
     {
         public BindableCollection<string> ServerSettings { get; set; }
         public string ServerUrl { get; private set; }
-        public string AuthInfo { get; private set; } = "Not signed in";
+        public string AuthInfo { get; private set; }
 
         private dynamic _currentDataView;
         LoginControlViewModel LoginForm { get; set; } = new LoginControlViewModel(null);
@@ -24,8 +24,9 @@ namespace EffortlessWpf.ViewModels
                 return _selectedServerSetting;
             }
             set
-            { 
+            {
                 _selectedServerSetting = value;
+
                 Debug.WriteLine($"Selected {value} {_selectedServerSetting} {SelectedServerSetting}");
                 
                 switch(value)
@@ -41,14 +42,20 @@ namespace EffortlessWpf.ViewModels
                         break;
                 }
 
+                AuthSingleton.Instance.Logout();
                 if (_currentDataView != null)
                 {
                     UpdateCurrentViewData();
                 }
-                OpenLoginPage();
 
                 NotifyOfPropertyChange(() => SelectedServerSetting);
             }
+        }
+
+        public ShellViewModel()
+        {
+            AuthSingleton.Instance.OnLoginEvent += Login;
+            AuthSingleton.Instance.OnLogoutEvent += Logout;
         }
 
         /// <summary>
@@ -69,24 +76,19 @@ namespace EffortlessWpf.ViewModels
         public void LoadDepartmentsPage() => ActivateDataWindow<DepartmentModel>();
         public void OpenLoginPage()
         {
-            if (AuthSingleton.Instance.IsAuthenticated()) return;
-
-            Debug.WriteLine("User is not authenticated.");
             LoginForm.ApiUrl = ServerUrl;
-            LoginForm.OnSuccessfullLogin += OnSuccessfullLogin;
+            LoginForm.OnSuccessfullLogin += Login;
             ActivateItem(LoginForm);
-        }
-
-        private void OnSuccessfullLogin(object sender, TokenModel token)
-        {
-            AuthInfo = $"Signed in as {token.User.FullNameCapitalized}";
-            NotifyOfPropertyChange(() => AuthInfo);
-
-            DeactivateItem(LoginForm, true);
         }
 
         public void ActivateDataWindow<T>() where T : IEffortlessModel
         {
+            if (!AuthSingleton.Instance.IsAuthenticated())
+            {
+                AuthSingleton.Instance.Logout();
+                return;
+            }
+
             var dataView = new GenericDataViewModel<T>(ServerUrl);
             _currentDataView = dataView;
 
@@ -100,6 +102,22 @@ namespace EffortlessWpf.ViewModels
             ActivateItem(_currentDataView);
         }
 
+        public void Logout(object sender, TokenModel loginToken)
+        {
+            AuthInfo = "Not signed in";
+            NotifyOfPropertyChange(() => AuthInfo);
+
+            OpenLoginPage();
+        }
+
+        public void Login(object sender, TokenModel loginToken)
+        {
+            AuthInfo = $"Signed in as {loginToken.User.FullNameCapitalized}";
+            NotifyOfPropertyChange(() => AuthInfo);
+
+            DeactivateItem(LoginForm, true);
+        }
+
         public async void Test(object o, EffortlessModelEventArgs args)
         {
             IWindowManager wm = new WindowManager();
@@ -107,13 +125,21 @@ namespace EffortlessWpf.ViewModels
             if (args.Model is UserModel user)
             {
                 Debug.WriteLine($"You clicked on {user.FirstName} {user.LastName}.");
-                wm.ShowWindow(new Users.UserAppointmentViewModel(ServerUrl, user));
+                var s = new Users.UserAppointmentViewModel(ServerUrl, user);
+                s.OnDoubleClickEvent += UserDoubleClicked;
+                wm.ShowWindow(s);
             }
             else if (args.Model is CompanyModel company)
             {
                 //wm.ShowWindow(new CompanyDepartmentsViewModel(ServerUrl, company));
                 wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, company));
             }
+        }
+
+        public void UserDoubleClicked(object sender, DepartmentModel doubleClickedModel)
+        {
+            IWindowManager wm = new WindowManager();
+            wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, doubleClickedModel.Company));
         }
     }
 }

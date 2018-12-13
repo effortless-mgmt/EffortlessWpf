@@ -15,9 +15,9 @@ namespace EffortlessWpf.ViewModels.Users
         public AppointmentModel SelectedAppointment { get; set; }
         public UserModel CurrentUser { get; set; }
         public string WindowTitle { get; set; }
+        public event EventHandler<DepartmentModel> OnDoubleClickEvent;
         private UserAccess _access;
         private string _apiUrl;
-
         public string ApiUrl
         {
             get => _apiUrl; 
@@ -60,5 +60,7 @@ namespace EffortlessWpf.ViewModels.Users
             Appointments = new BindableCollection<AppointmentModel>(appointments);
             NotifyOfPropertyChange(() => Appointments);
         }
+
+        public void DoubleClick() => OnDoubleClickEvent?.Invoke(this, SelectedAppointment.WorkPeriod.Department);
     }
 }

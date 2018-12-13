@@ -1,15 +1,9 @@
 ﻿using Caliburn.Micro;
-using EffortlessStdLibrary.DataAccess;
 using EffortlessStdLibrary.Models;
+using EffortlessWpf.Auth;
 using EffortlessWpf.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace EffortlessWpf.ViewModels
 {
@@ -17,8 +11,10 @@ namespace EffortlessWpf.ViewModels
     {
         public BindableCollection<string> ServerSettings { get; set; }
         public string ServerUrl { get; private set; }
-        
+        public string AuthInfo { get; private set; } = "Not signed in";
+
         private dynamic _currentDataView;
+        LoginControlViewModel LoginForm { get; set; } = new LoginControlViewModel(null);
 
         private ServerSetting _selectedServerSetting = ServerSetting.None;
         public ServerSetting SelectedServerSetting
@@ -49,6 +45,7 @@ namespace EffortlessWpf.ViewModels
                 {
                     UpdateCurrentViewData();
                 }
+                OpenLoginPage();
 
                 NotifyOfPropertyChange(() => SelectedServerSetting);
             }
@@ -70,6 +67,23 @@ namespace EffortlessWpf.ViewModels
         public void LoadUsersPage() => ActivateDataWindow<UserModel>();
         public void LoadCompaniesPage() => ActivateDataWindow<CompanyModel>();
         public void LoadDepartmentsPage() => ActivateDataWindow<DepartmentModel>();
+        public void OpenLoginPage()
+        {
+            if (AuthSingleton.Instance.IsAuthenticated()) return;
+
+            Debug.WriteLine("User is not authenticated.");
+            LoginForm.ApiUrl = ServerUrl;
+            LoginForm.OnSuccessfullLogin += OnSuccessfullLogin;
+            ActivateItem(LoginForm);
+        }
+
+        private void OnSuccessfullLogin(object sender, TokenModel token)
+        {
+            AuthInfo = $"Signed in as {token.User.FullNameCapitalized}";
+            NotifyOfPropertyChange(() => AuthInfo);
+
+            DeactivateItem(LoginForm, true);
+        }
 
         public void ActivateDataWindow<T>() where T : IEffortlessModel
         {

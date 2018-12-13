@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="EffortlessWpf.Views.LoginControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EffortlessWpf.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="28">Login</TextBlock>
+        
+        <TextBlock Grid.Column="1" Grid.Row="3" FontSize="14" FontWeight="Bold">Username</TextBlock>
+        <TextBox x:Name="UserName" Grid.Column="1" Grid.Row="4" IsEnabled="{Binding Path=IsLoginFormEnabled}" />
+        <!--<TextBox Grid.Column="1" Grid.Row="4" x:Name="UserName" />-->
+
+        <TextBlock Grid.Column="1" Grid.Row="6" FontSize="14" FontWeight="Bold">Password</TextBlock>
+        <PasswordBox x:Name="SecurePassword" Grid.Column="1" Grid.Row="7" cal:Message.Attach="[Action SetPassword($source)]" IsEnabled="{Binding Path=IsLoginFormEnabled}" />
+        <!--<PasswordBox Grid.Column="1" Grid.Row="7" x:Name="Password" />-->
+
+        <Button Grid.Column="1" Grid.Row="9" x:Name="Login" IsEnabled="{Binding Path=IsLoginFormEnabled}">Login</Button>
+        <Button Grid.Column="1" Grid.Row="10" x:Name="AutoLogin" Margin="0 5 0 0" IsEnabled="{Binding Path=IsLoginFormEnabled}">Login Automatically</Button>
+    </Grid>
+</UserControl>

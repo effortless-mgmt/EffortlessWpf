@@ -16,5 +16,6 @@ namespace EffortlessStdLibrary.Models
         public string FullNameCapitalized => System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(FullName.ToLower());
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string Password { get; set; }
     }
 }

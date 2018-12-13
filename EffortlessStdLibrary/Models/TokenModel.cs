@@ -10,5 +10,6 @@ namespace EffortlessStdLibrary.Models
     {
         public UserModel User { get; set; }
         public string Token { get; set; }
+        public TokenDetailModel TokenDeserialized => TokenDetailModel.CreateFromToken(Token);
     }
 }

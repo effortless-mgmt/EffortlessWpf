@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using EffortlessStdLibrary.DataAccess;
 using EffortlessStdLibrary.Models;
+using EffortlessWpf.Auth;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +41,7 @@ namespace EffortlessWpf.ViewModels.Departments
             string nl = "%0A";
             Process.Start($"mailto:{SelectedAppointment.Owner.Email}?subject={CurrentWorkPeriod.Department.Name} : " +
                 $"Regarding your appointment at {SelectedAppointment.Start.ToShortDateString()}&" +
-                $"body=Dear {SelectedAppointment.Owner.FullNameCapitalized},{nl}{nl}Sincerely,{nl}{CurrentWorkPeriod.Department.Name}{nl}");
+                $"body=Dear {SelectedAppointment.Owner.FullNameCapitalized},{nl}{nl}{nl}{nl}Sincerely,{nl}{AuthSingleton.Instance.AuthToken.User.FullNameCapitalized}{nl}");
         }
     }
 }

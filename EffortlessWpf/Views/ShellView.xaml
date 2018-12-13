@@ -25,12 +25,12 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" Grid.ColumnSpan="4">
-            <MenuItem Header="_Data">
+            <!--<MenuItem Header="_Data">
                 <MenuItem Header="_Create" />
                 <MenuItem Header="De_lete" />
                 <Separator />
                 <MenuItem Header="_Refresh" x:Name="LoadUsers" />
-            </MenuItem>
+            </MenuItem>-->
             <MenuItem Header="_Environment">
                 <MenuItem Header="_Production" x:Name="SelectProduction" />
                 <MenuItem Header="_Staging" x:Name="SelectStaging" />
@@ -39,7 +39,7 @@
             <MenuItem Header="Data _Source">
                 <MenuItem Header="_Users" x:Name="LoadUsersPage" />
                 <MenuItem Header="C_ompanies" x:Name="LoadCompaniesPage" />
-                <MenuItem Header="De_partments" x:Name="LoadDepartmentsPage" />
+                <!--<MenuItem Header="De_partments" x:Name="LoadDepartmentsPage" />-->
             </MenuItem>
         </Menu>
 

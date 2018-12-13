@@ -85,7 +85,7 @@ namespace EffortlessWpf.ViewModels
 
         public void AutoLogin()
         {
-            UserName = "jd";
+            UserName = "TestBooker";
             Password = "SecurePassword";
 
             NotifyOfPropertyChange(() => UserName);

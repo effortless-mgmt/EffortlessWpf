@@ -8,14 +8,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="Departments" AutoGenerateColumns="True"
+        <DataGrid x:Name="Departments" AutoGenerateColumns="False"
                       CanUserDeleteRows="False" AlternatingRowBackground="LightGray" Background="White"
                         CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedDepartment}"
                     IsReadOnly="True" SelectionMode="Single" cal:Message.Attach="[Event MouseDoubleClick] = [Action DoubleClick()]">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Pno" Binding="{Binding Path=Pno}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="Address" Binding="{Binding Path=Address.ReadableString}" />
+            </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <DataGrid ItemsSource="{Binding WorkPeriods}" AutoGenerateColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" CanUserReorderColumns="False" SelectionMode="Single">
-
+                    <DataGrid ItemsSource="{Binding WorkPeriods}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" CanUserReorderColumns="False" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Header="Start" Binding="{Binding Path=Start}" />
+                            <DataGridCheckBoxColumn Header="Is Active?" Binding="{Binding Path=Active}" />
+                        </DataGrid.Columns>
                     </DataGrid>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>

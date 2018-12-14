@@ -26,7 +26,7 @@ namespace EffortlessStdLibrary.DataAccess
                 .GetJsonAsync<ICollection<UserModel>>();
         }
 
-        public async Task DeleteUser(UserModel user)
+        public async Task DeleteUserAsync(UserModel user)
         {
             await ApiUrl
                 .AppendPathSegment("User")
@@ -34,7 +34,7 @@ namespace EffortlessStdLibrary.DataAccess
                 .DeleteAsync();
         }
 
-        public async Task<UserModel> CreateUser(UserModel user)
+        public async Task<UserModel> CreateUserAsync(UserModel user)
         {
             return await ApiUrl
                 .AppendPathSegment("User")
@@ -47,6 +47,30 @@ namespace EffortlessStdLibrary.DataAccess
             return await ApiUrl
                 .AppendPathSegments("User", user.UserName, "Appointment")
                 .GetJsonAsync<IList<WorkPeriodModel>>();
+        }
+
+        public async Task<IList<UserModel>> GetUsersByRoleAsync(RoleModel role)
+        {
+            return await ApiUrl
+                .AppendPathSegment("User")
+                .SetQueryParam("roleId", role.Id)
+                .GetJsonAsync<IList<UserModel>>();
+        }
+
+        public async Task<IList<RoleModel>> GetRolesAsync()
+        {
+            return await ApiUrl
+                .AppendPathSegments("Role")
+                .GetJsonAsync<IList<RoleModel>>();
+        }
+
+        public async Task<RoleModel> GetRoleByRoleNameAsync(string roleName)
+        {
+            var role = await ApiUrl
+                .AppendPathSegments("Role")
+                .SetQueryParam("RoleName", roleName)
+                .GetJsonAsync<IList<RoleModel>>();
+            return role[0];
         }
     }
 }

@@ -4,16 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EffortlessWpf.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="CornflowerBlue">
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
-        <DataGrid x:Name="Users" AutoGenerateColumns="False"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <CheckBox x:Name="OnlyShowSubstitutes" Grid.Row="0" Content="Filter only substitutes?" />
+        <DataGrid x:Name="Users" AutoGenerateColumns="False" Grid.Row="1" IsReadOnly="True"
                       CanUserDeleteRows="True" AlternatingRowBackground="LightGray" Background="White"
-                        CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedUser}">
+                        CanUserAddRows="False" CanUserReorderColumns="False" SelectedItem="{Binding Path=SelectedUser}"
+                   cal:Message.Attach="[Event MouseDoubleClick] = [Action DoubleClick()]">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Username" Binding="{Binding Path=UserName}" />
-                <DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}" />
-                <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LastName}" />
+                <DataGridTextColumn Header="Full Name" Binding="{Binding Path=FullNameCapitalized}" />
+                <!--<DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}" />
+                <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LastName}" />-->
                 <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" />
                 <DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" />
             </DataGrid.Columns>

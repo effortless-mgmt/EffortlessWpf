@@ -71,9 +71,20 @@ namespace EffortlessWpf.ViewModels
         public void SelectStaging() => SelectedServerSetting = ServerSetting.Staging;
         public void SelectLocal() => SelectedServerSetting = ServerSetting.Local;
 
-        public void LoadUsersPage() => ActivateDataWindow<UserModel>();
+        //public void LoadUsersPage() => ActivateDataWindow<UserModel>();
+        public void LoadUsersPage()
+        {
+            if (!AuthSingleton.Instance.IsAuthenticated())
+            {
+                AuthSingleton.Instance.Logout();
+                return;
+            }
+            var userForm = new UsersViewModel(ServerUrl);
+            userForm.OnUserDoubleClick += HandleUserDoubleClick;
+            ActivateItem(userForm);
+        }
         public void LoadCompaniesPage() => ActivateDataWindow<CompanyModel>();
-        public void LoadDepartmentsPage() => ActivateDataWindow<DepartmentModel>();
+        //public void LoadDepartmentsPage() => ActivateDataWindow<DepartmentModel>();
         public void OpenLoginPage()
         {
             LoginForm.ApiUrl = ServerUrl;
@@ -98,7 +109,7 @@ namespace EffortlessWpf.ViewModels
                 SelectedServerSetting = ServerSetting.Production;
             }
 
-            dataView.DoubleClickedEventHandler += Test;
+            dataView.DoubleClickedEventHandler += HandleGenericDataDoubleClick;
             ActivateItem(_currentDataView);
         }
 
@@ -118,16 +129,13 @@ namespace EffortlessWpf.ViewModels
             DeactivateItem(LoginForm, true);
         }
 
-        public async void Test(object o, EffortlessModelEventArgs args)
+        public void HandleGenericDataDoubleClick(object o, EffortlessModelEventArgs args)
         {
             IWindowManager wm = new WindowManager();
             Debug.WriteLine($"I was double clicked. Id is {args.Model?.Id}");
             if (args.Model is UserModel user)
             {
-                Debug.WriteLine($"You clicked on {user.FirstName} {user.LastName}.");
-                var s = new Users.UserAppointmentViewModel(ServerUrl, user);
-                s.OnDoubleClickEvent += UserDoubleClicked;
-                wm.ShowWindow(s);
+                HandleUserDoubleClick(o, user);
             }
             else if (args.Model is CompanyModel company)
             {
@@ -136,10 +144,19 @@ namespace EffortlessWpf.ViewModels
             }
         }
 
-        public void UserDoubleClicked(object sender, DepartmentModel doubleClickedModel)
+        public void HandleUserDepartmentDoubleClick(object sender, DepartmentModel args)
         {
             IWindowManager wm = new WindowManager();
-            wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, doubleClickedModel.Company));
+            wm.ShowWindow(new Departments.CompanySubViewModel(ServerUrl, args.Company));
+        }
+
+        public void HandleUserDoubleClick(object sender, UserModel user)
+        {
+            IWindowManager wm = new WindowManager();
+            Debug.WriteLine($"You clicked on {user.FirstName} {user.LastName}.");
+            var s = new Users.UserAppointmentViewModel(ServerUrl, user);
+            s.OnDoubleClickEvent += HandleUserDepartmentDoubleClick;
+            wm.ShowWindow(s);
         }
     }
 }
